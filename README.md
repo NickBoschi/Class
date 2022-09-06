@@ -6,3 +6,4 @@ My computer experience so far includes some of the basic, required courses for t
 I decided to take web programming as a computer science elective because it is an area that I know very little about but would like to learn. It seems very interesting and useful. I'm not sure sure yet where I will use what I learn in this course
 
 ![Picture of me](me.jpeg)
+<img src="me.jpeg" height="200" width="200">

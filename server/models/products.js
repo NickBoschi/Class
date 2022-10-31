@@ -4,6 +4,11 @@ function getProducts() {
     return data.products;
 }
 
-function getProduct() {
+function getProduct(id) {
     return data.products.find(p => p.id === id);
 }
+
+module.exports = {
+    getProducts,
+    getProduct
+};

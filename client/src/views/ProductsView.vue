@@ -1,13 +1,21 @@
 <script setup lang="ts">
-    import { computed, reactive, ref } from "vue";
+    import { computed, reactive, ref, watch } from "vue";
     import { RouterLink } from "vue-router";
-    import { getProducts } from "../stores/products";
+    import { getProducts, type Product } from "../stores/products";
 
     const products = reactive(getProducts());
 
     const search = ref("");
 
-    const results = computed(() => products.filter((product) => product.title.toLowerCase().includes(search.value.toLowerCase())));
+    // const results = ref(products);
+
+    // function searchProducts() {
+    //     results.value = products.filter((product) => { 
+    //         return product.title.toLowerCase().includes(search.value.toLowerCase());
+    //     });
+    // }
+
+    // watch(search, searchProducts);
 
 </script>
 
@@ -17,7 +25,7 @@
             <input class="input" type="text" placeholder="Search" v-model="search" />
         </div>
         <div class="products">
-            <RouterLink class="product" v-for="product in products" :key="product.id" :to="`/product/${product.id}`">
+            <RouterLink class="product" v-for="product in products" :key="product.id" :to="`/product/${product.id}`" v-show="product.title.toLowerCase().includes(search.toLowerCase())">
                 <div class="product-image">
                     <img :src="product.thumbnail" :alt="product.title" />
                 </div>

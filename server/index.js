@@ -8,6 +8,8 @@ app.get('/', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.end('Happy Sweet New Year');
+
+  res.status(200).send('Happy New Year');
 })
 
 app.listen(port, () => {

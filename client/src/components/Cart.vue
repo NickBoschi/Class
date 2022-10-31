@@ -1,6 +1,6 @@
 <script setup lang="ts">
      import FlyoutPanel from './FlyoutPanel.vue';
-     import cart, {} from "../stores/cart";
+     import cart, { updateProductQuantity } from "../stores/cart";
      import { computed } from 'vue';
 
      const { isOpen } = defineProps<{
@@ -43,7 +43,8 @@
                             <div class="price">${{ item.product.price }}</div>
                             <div>
                                 x
-                                <select v-model="item.quantity" clas="quantity">
+                                <select :value="item.quantity" class="quantity" @input="(e) => updateProductQuantity(item.product.id, +(<HTMLSelectElement>e.target).value">
+                                    <option value="0">0 (delete)</option>
                                     <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
                                 </select> 
                                 = ${{ item.quantity * item.product.price }}</div>

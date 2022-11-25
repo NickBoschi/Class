@@ -1,12 +1,18 @@
 <script setup lang="ts">
+    import { isLoading } from "@/stores/session";
     import { ref } from "vue";
     import { useRoute } from "vue-router";
-    import { getProduct } from "../stores/products";
+    import { getProduct, type Product } from "../stores/products";
 
     const route = useRoute();
     route.params.id;
 
-    const product = ref(getProduct(+route.params.id));
+    const product = ref(null as Product | null);
+
+    getProduct(+route.params.id).then(x => {
+            product.value = x
+            console.log('The fetch returned');
+    });
 
 </script>
 
@@ -23,6 +29,9 @@
             </p>
             <p>{{ product.description }}</p>
         </div>
+    </div>
+    <div v-else-if="isLoading">
+        <img src="@/assets/placeholder-loading-demo-1.gif" style="width: 100%" />
     </div>
     <div v-else class="section">
         <h2 class="title">Product Not Found</h2>

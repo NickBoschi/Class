@@ -1,20 +1,16 @@
 import { findDir } from '@vue/compiler-core';
-import data from '../data/products.json';
+import { api } from "./session";
 
 export function getProducts() {
-    return data.products as Product[];
+    return api<ListEnvelope<Product>>('products');
 }
 
 export function getProduct(id: number) {
-    return getProducts().find((product) => product.id === id);
+    return api<Product>(`products/${id}`)
 }
 
-export function deleteProduct(id: number) {
-    data.products = data.products.filter((product) => product.id !== id);
-}
-
-export interface ProductDocument {
-    products: Product[]
+export interface ListEnvelope<T> {
+    products: T[]
     total: number
     skip: number
     limit: number

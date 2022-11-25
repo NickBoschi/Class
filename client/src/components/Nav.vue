@@ -3,6 +3,7 @@
   import { RouterLink } from 'vue-router';
   import LoginBadge from './loginBadge.vue';
   import Cart from './Cart.vue';
+  import MessageList from './MessageList.vue';
 
   const isActive = ref(false);
   const isCartOpen = ref(false);
@@ -62,6 +63,7 @@
     </div>
 
     <div class="navbar-end">
+      <MessageList />
       <div class="navbar-item">
         <button class="button is-primary" @click="isCartOpen = !isCartOpen">
           <strong>Cart</strong>

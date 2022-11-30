@@ -7,7 +7,7 @@ const PATCH ='PATCH';
  export interface CartItem {
      quantity: number;
      product: Product;
- }
+ } 
 
  const cart = reactive([] as CartItem[]);
 

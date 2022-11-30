@@ -20,7 +20,7 @@ app.use(express.json());
 
 app
   .get('/', (req, res) => {
-    res.status(200).send('Happy New Year, ya filthy animal')
+    res.status(200).send('Happy New Year')
   })
   .get('/error', (req, res) => {
     sss.PORT();

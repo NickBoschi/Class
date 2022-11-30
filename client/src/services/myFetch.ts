@@ -10,4 +10,4 @@ export default function myFetch<T>(url: string, data: any = null, method?: strin
         body: data ? JSON.stringify(data) : undefined,
     };
     return fetch(API_ROOT + url, options).then( x=>x.json() );
- }
+ } 

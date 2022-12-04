@@ -1,25 +1,37 @@
 const data = require('../data/products.json');
 const { connect } = require('./mongo');
+const { ObjectId } = require('mongodb'); 
+
+const COLLECTION_NAME = 'products'
 
 async function collection() {
     const client = await connect();
-    return client.db('shopper').collection('products');
+    return client.db('shopper').collection(COLLECTION_NAME);
 }
 
 async function getProducts() {
-    const db = await colleection();
+    const db = await collection();
     const data = await db.find().toArray();
-    return data;
+    return { total: data.length, limit: data.length, products: data };
 }
 
 async function getProduct(id) {
     const db = await collection();
-    const data = await db.findOne({ _id: id })
+    const data = await db.findOne({ _id: new ObjectId(id) })
     return data;
 }
 
+async function seed() {
+    const db = await collection();
+    //db.deleteMany(data.products);
+    db.insertMany(data.products);
+    return 'success';
+}
+
 module.exports = {
+    COLLECTION_NAME,
     collection,
     getProducts,
-    getProduct
+    getProduct,
+    seed
 };

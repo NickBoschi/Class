@@ -20,8 +20,8 @@ const PATCH ='PATCH';
  watch(() => session.user, load);
 
  export function addProductToCart(product: Product, quantity: number = 1) {
-    api(`cart/${session.user?.email}`, { productId: product.id, quantity }).then((data) => {
-        const i = cart.findIndex((x) => x.product.id === product.id);
+    api(`cart/${session.user?.email}`, { productId: product._id, quantity }).then((data) => {
+        const i = cart.findIndex((x) => x.product._id === product._id);
         if (i != -1) {
             cart[i] = data as CartItem;
             session.messages.push({ type: 'success', text: `Updated ${product.title} in cart to ${cart[i].quantity}`});
@@ -32,9 +32,9 @@ const PATCH ='PATCH';
     });
 }
 
- export function updateProductQuantity(id: number, quantity: number) {
+ export function updateProductQuantity(id: string, quantity: number) {
     api<CartItem>(`cart/${session.user?.email}/${id}/${quantity}`, {}, PATCH).then((data) => {
-        const i = cart.findIndex((x) => x.product.id === id);
+        const i = cart.findIndex((x) => x.product._id === id);
         if (i != -1) {
             if(data){
                 cart[i] = data;

@@ -2,48 +2,64 @@ const { getProduct } = require('./products');
 // CartItem: { id: 1, quantity: 2, productId: 1, userId: 'mp@np.edu' }
 const list = [];
 
+const { connect } = require('./mongo');
 
-const get = (userId) => {
-  return list
-    .filter((cartItem) => cartItem.userId === userId)
-    .map((cartItem) => ({
-      ...cartItem,
-      product: getProduct(cartItem.product)
-    }));
+const COLLECTION_NAME = 'products'
+
+async function collection() {
+    const client = await connect();
+    return client.db('shopper').collection(COLLECTION_NAME);
 }
 
-const add = (productId, userId, quantity) => {
-    let cartItem = list.find((cartItem) => cartItem.userId === userId && cartItem.productId === productId);
+const get = async (userId) => {
+  const db = await collection();
+  const data = await db.find({ userId }).toArray();
+  return await Promise.all( data
+    .map(async (cartItem) => ({
+      ...cartItem,
+      product: await getProduct(cartItem.productId)
+    })));
+};
+
+/**
+ * 
+ * @param {string} userId 
+ * @param {string} productId 
+ * @param {number} quantity 
+ * @returns 
+ */
+const add = async (userId, productId, quantity) => {
+  const db = await collection();
+    let cartItem = await db.findOne({ userId, productId })
     if (cartItem) {
         cartItem.quantity += quantity;
+        db.updateOne({ userId, productId }, { $set: cartItem })
     } else {
         cartItem = { id: list.length + 1, quantity, productId, userId };
-        list.push(cartItem);
+        await db.insertOne(cartItem)
     }
-    return { ...cartItem, product: getProduct(productId) };
+    return { ...cartItem, product: await getProduct(productId) };
 };
 
 /**
   * 
   * @param {string} userId 
-  * @param {number} productId 
+  * @param {string} productId 
   * @param {number} quantity 
   * @returns 
   */
- const update = (userId, productId, quantity) => {
+const update = async (userId, productId, quantity) => {
+  const db = await collection();
   console.log(userId, productId, quantity);
-  const index = list.findIndex((cartItem) => cartItem.userId === userId && cartItem.productId === productId);
-  if (index !== -1) {
-    if (quantity === 0) {
-      list.splice(index, 1);
+  if (quantity === 0) {
+    db.deleteOne({ userId, productId })
       return "null";
     } else {
-      list[index].quantity = quantity;
+      let cartItem = await db.findOne({ userId, productId })
+      cartItem.quantity = quantity;
+      db.updateOne({ userId, productId }, { $set: cartItem })
+      return { ...cartItem, product: await getProduct(productId) };
     }
-  } else {
-    throw new Error('Cart item not found');
-  }
-  return { ...list[indec], product: getProduct(productId) };
 }
 
 module.exports = { add, get, update }

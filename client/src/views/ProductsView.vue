@@ -35,7 +35,7 @@
             <input class="input" type="text" placeholder="Search" v-model="search" />
         </div>
         <div class="products">
-            <RouterLink class="product" :class="{ 'is-disabled': isLoading }" v-for="product in products" :key="product.id" :to="`/product/${product.id}`" v-show="product.title.toLowerCase().includes(search.toLowerCase())">
+            <RouterLink class="product" :class="{ 'is-disabled': isLoading }" v-for="product in products" :key="product._id" :to="`/product/${product._id}`" v-show="product.title.toLowerCase().includes(search.toLowerCase())">
                 <div class="product-image">
                     <img :src="product.thumbnail" :alt="product.title" />
                 </div>

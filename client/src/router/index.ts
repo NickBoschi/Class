@@ -33,7 +33,22 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginViewVue
-    }
+    },
+    {
+      path: '/admin/products',
+      name: 'admin_products',
+      component: () => import('../views/admin/ProductList.vue'),
+  },
+  {
+      path: '/admin/product/:id',
+      name: 'admin_product_edit',
+      component: () => import('../views/admin/ProductEdit.vue'),
+  },
+  {
+      path: '/admin/product_images/:id',
+      name: 'admin_product_images',
+      component: () => import('../views/admin/ProductImages.vue'),
+  }
   ]
 })
 
